@@ -1,158 +1,119 @@
 # AI 고객 리뷰 분석 시스템
 
-OpenAI GPT-4를 활용한 고객 리뷰 감성 분석 및 마케팅 인사이트 제공 시스템입니다.
+OpenAI GPT-4를 활용하여 고객 리뷰를 자동으로 분석하고, 긍정/부정 감성 분석과 마케팅 인사이트를 제공하는 웹 애플리케이션입니다.
 
 ## 주요 기능
 
-### 📊 분석 기능
 - **감성 분석**: 고객 리뷰를 긍정/부정으로 자동 분류
-- **키워드 추출**: 긍정/부정 리뷰에서 주요 키워드 및 빈도 분석
-- **시각화**: 원형 그래프를 통한 긍정/부정 비율 표시
-- **샘플 리뷰**: 각 키워드별 대표 리뷰 3개 제공
-
-### 💡 인사이트 제공
-- **개선 아이디어**: 부정 리뷰 기반 제품/서비스 개선 방안
-- **마케팅 전략**: 긍정 키워드 활용한 마케팅 전략 (400자 이상)
-- **홍보 카피**: SNS/배너 활용 가능한 홍보 문구 3개
-
-### 📥 입력 방식
-- **직접 입력**: 텍스트 영역에 리뷰 직접 입력
-- **파일 업로드**: .txt, .csv 파일 업로드 지원
-- **제품 정보**: 제품/서비스 군 및 이름 입력
-
-### 📤 다운로드 기능
-- **HTML 파일**: 웹 브라우저에서 볼 수 있는 형태로 저장
-- **Word 파일**: Microsoft Word에서 편집 가능한 .docx 형태로 저장
+- **키워드 추출**: 긍정/부정 리뷰에서 핵심 키워드 추출 및 빈도 분석
+- **마케팅 인사이트**: AI가 생성하는 개선 방안 및 마케팅 전략
+- **다양한 입력 방식**: 직접 입력 또는 파일 업로드 (.txt, .csv, .docx)
+- **결과 다운로드**: HTML 및 Word 파일로 분석 결과 저장
+- **관리자 페이지**: 프롬프트 관리 및 최적화 기능
 
 ## 기술 스택
 
 - **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
-- **Charts**: Recharts
-- **AI**: OpenAI GPT-4
-- **File Export**: file-saver, docx
-- **Deployment**: Vercel
+- **AI**: OpenAI GPT-4.1
+- **차트**: Recharts
+- **파일 처리**: file-saver, docx, mammoth
+- **배포**: Vercel
 
 ## 설치 및 실행
 
-### 1. 프로젝트 클론
-```bash
-git clone <repository-url>
-cd review-analyzer
-```
-
-### 2. 의존성 설치
+### 1. 의존성 설치
 ```bash
 npm install
 ```
 
-### 3. 환경 변수 설정
-`.env.local` 파일을 생성하고 OpenAI API 키를 설정합니다:
+### 2. 환경 변수 설정
+`.env.local` 파일을 생성하고 다음 내용을 추가하세요:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-### 4. 개발 서버 실행
+### 3. 개발 서버 실행
 ```bash
 npm run dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인합니다.
+브라우저에서 `http://localhost:3000`으로 접속하세요.
 
-## Vercel 배포
+## 프롬프트 관리
 
-### 1. Vercel 계정 연결
-```bash
-npm i -g vercel
-vercel login
+### 로컬 개발 환경
+- 관리자 페이지(`/admin`)에서 프롬프트를 직접 편집할 수 있습니다.
+- 프롬프트는 `data/prompts/` 폴더에 JSON 파일로 저장됩니다.
+
+### 배포 환경 (Vercel 등)
+배포 환경에서는 파일 시스템 접근이 제한되므로 환경 변수를 통해 프롬프트를 관리합니다.
+
+#### 방법 1: JSON 형식으로 설정
+```env
+CUSTOM_PROMPT={"name":"커스텀 프롬프트","description":"배포용 프롬프트","content":"프롬프트 내용..."}
 ```
 
-### 2. 프로젝트 배포
-```bash
-vercel
+#### 방법 2: 프롬프트 내용만 설정
+```env
+CUSTOM_PROMPT=프롬프트 내용을 여기에 입력하세요...
 ```
 
-### 3. 환경 변수 설정
-Vercel 대시보드에서 프로젝트 설정 → Environment Variables에서 `OPENAI_API_KEY`를 추가합니다.
+### 프롬프트 우선순위
+1. **환경 변수** (`CUSTOM_PROMPT`) - 배포 환경에서 우선 적용
+2. **로컬 파일** (`data/prompts/active.json`) - 개발 환경에서 적용
+3. **기본 프롬프트** - 위 두 가지가 없을 때 적용
+
+## 배포
+
+### Vercel 배포
+1. GitHub에 코드를 푸시합니다.
+2. Vercel에서 프로젝트를 연결합니다.
+3. 환경 변수를 설정합니다:
+   - `OPENAI_API_KEY`: OpenAI API 키
+   - `CUSTOM_PROMPT`: (선택사항) 커스텀 프롬프트
+
+### 환경 변수 설정 예시 (Vercel)
+```
+OPENAI_API_KEY=sk-...
+CUSTOM_PROMPT={"name":"프로덕션 프롬프트","description":"최적화된 분석 프롬프트","content":"###지시사항\n고객 리뷰를 정확히 분석하여..."}
+```
+
+## 파일 구조
+
+```
+src/
+├── app/
+│   ├── admin/              # 관리자 페이지
+│   ├── api/
+│   │   ├── admin/prompts/  # 프롬프트 관리 API
+│   │   └── analyze/        # 리뷰 분석 API
+│   └── page.tsx           # 메인 페이지
+├── components/
+│   ├── AnalysisResult.tsx  # 분석 결과 컴포넌트
+│   ├── PromptEditor.tsx    # 프롬프트 편집기
+│   └── ReviewForm.tsx      # 리뷰 입력 폼
+├── types/
+│   ├── analysis.ts         # 분석 관련 타입
+│   └── prompt.ts          # 프롬프트 관련 타입
+└── utils/
+    ├── downloadUtils.ts    # 파일 다운로드 유틸리티
+    └── promptManager.ts    # 프롬프트 관리 유틸리티
+```
 
 ## 사용 방법
 
-### 1. 리뷰 입력
-- 고객 리뷰를 직접 입력하거나 파일로 업로드
-- 제품/서비스 군 입력 (예: 핸드폰, 노트북, 음식점)
-- 제품/서비스 이름 입력 (예: 갤럭시 S24, 맥북 프로)
+1. **리뷰 입력**: 좌측 패널에서 고객 리뷰를 직접 입력하거나 파일로 업로드
+2. **제품 정보 입력**: 제품/서비스 군과 구체적인 이름 입력
+3. **분석 실행**: "분석 시작" 버튼 클릭
+4. **결과 확인**: 우측 패널에서 감성 분석 결과 및 인사이트 확인
+5. **결과 저장**: HTML 또는 Word 파일로 다운로드
 
-### 2. 분석 실행
-- "분석 시작" 버튼 클릭
-- AI가 리뷰를 분석하여 결과 생성 (약 10-30초 소요)
+## 관리자 기능
 
-### 3. 결과 확인
-- 긍정/부정 비율 및 원형 그래프
-- 주요 키워드별 빈도 및 샘플 리뷰
-- 개선 아이디어 및 마케팅 인사이트
-
-### 4. 결과 다운로드
-- HTML 또는 Word 파일로 분석 결과 저장
-
-## API 엔드포인트
-
-### POST /api/analyze
-고객 리뷰 분석을 수행합니다.
-
-**Request Body:**
-```json
-{
-  "customerReview": "고객 리뷰 텍스트",
-  "productServiceGroup": "제품/서비스 군",
-  "productServiceName": "제품/서비스 이름"
-}
-```
-
-**Response:**
-```json
-{
-  "product": "제품명",
-  "analysisDate": "2024-01-01",
-  "totalReviewCount": 100,
-  "positiveReviewCount": 70,
-  "negativeReviewCount": 30,
-  "positiveKeywords": [...],
-  "negativeKeywords": [...],
-  "insights": {
-    "improvementIdeas": [...],
-    "marketingStrategy": "...",
-    "promoCopies": [...]
-  }
-}
-```
-
-## 프로젝트 구조
-
-```
-review-analyzer/
-├── src/
-│   ├── app/
-│   │   ├── api/analyze/route.ts    # OpenAI API 호출
-│   │   ├── layout.tsx              # 레이아웃
-│   │   └── page.tsx                # 메인 페이지
-│   ├── components/
-│   │   ├── ReviewForm.tsx          # 입력 폼
-│   │   └── AnalysisResult.tsx      # 결과 표시
-│   ├── types/
-│   │   └── analysis.ts             # 타입 정의
-│   └── utils/
-│       └── downloadUtils.ts        # 다운로드 기능
-├── public/                         # 정적 파일
-├── package.json                    # 의존성 관리
-└── README.md                       # 프로젝트 문서
-```
-
-## 주의사항
-
-1. **OpenAI API 키**: 반드시 유효한 OpenAI API 키가 필요합니다.
-2. **API 사용량**: GPT-4 사용으로 인한 API 비용이 발생할 수 있습니다.
-3. **파일 크기**: 업로드 파일은 적절한 크기로 제한하는 것을 권장합니다.
-4. **언어**: 현재 한국어 리뷰 분석에 최적화되어 있습니다.
+- **프롬프트 편집**: AI 분석 품질 향상을 위한 프롬프트 최적화
+- **실시간 미리보기**: 프롬프트 변경 사항 즉시 확인
+- **환경별 관리**: 개발/배포 환경에 따른 유연한 프롬프트 관리
 
 ## 라이선스
 
@@ -160,4 +121,4 @@ MIT License
 
 ## 기여
 
-이슈 리포트나 풀 리퀘스트는 언제든 환영합니다!
+이슈 리포트나 풀 리퀘스트를 환영합니다!

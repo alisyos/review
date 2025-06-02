@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { AnalysisRequest, AnalysisResult } from '@/types/analysis';
+import { getActivePrompt } from '@/utils/promptManager';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -25,82 +26,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = `###지시사항 
-제공된 고객 리뷰를 **정확히 분석**하여 감성 분류(긍정·부정)를 수행하고, 각 집합에서 키워드·빈도·샘플 리뷰·개선 인사이트를 도출하시오. 
-**반드시 모든 리뷰를 빠짐없이 분석하고, 정확한 개수를 세어야 합니다.**
-
-###핵심 분석 규칙
-1. **리뷰 개수 정확성**
-   - 제공된 모든 리뷰를 빠짐없이 분석
-   - 전체 리뷰 수 = 긍정 리뷰 수 + 부정 리뷰 수 (반드시 일치)
-   - 각 리뷰를 개별적으로 카운트
-
-2. **감성 분류 기준 (매우 엄격하게 적용)**
-   **긍정 리뷰:**
-   - 명확한 긍정 표현: 좋다, 만족, 추천, 빠르다, 편리하다, 괜찮다, 무난하다
-   - 칭찬 표현: 굿, 대박, 짱, 최고, 완벽, 훌륭
-   - 긍정적 결과: 효과있다, 도움된다, 성공적
-
-   **부정 리뷰 (놓치지 말고 정확히 분류):**
-   - 명확한 부정 표현: 나쁘다, 불만, 느리다, 불편하다, 별로다
-   - 문제점 지적: 깨졌다, 고장, 결함, 오류, 실망
-   - 부정적 감정: 짜증, 화남, 후회, 실망
-   - **중요**: "맛은 없지만", "별로지만", "아쉽지만" 등은 부정으로 분류
-   - **조건부 부정**: "~만 아니면", "~때문에 별로", "~가 문제"
-   - **약한 부정도 부정으로 분류**: "그냥 그렇다", "보통이다", "기대에 못미친다"
-
-3. **혼합 감정 처리**
-   - "좋지만 비싸다" → 긍정 1개, 부정 1개로 분리
-   - "맛은 없지만 비타민이니까" → 부정으로 분류 (맛없다가 주된 감정)
-   - "배송은 빠른데 제품이 별로" → 긍정 1개, 부정 1개로 분리
-
-4. **키워드 추출**
-   - 감성별로 가장 많이 언급된 명사/형용사 Top 5
-   - 정확한 빈도 계산 (중복 제거하지 말고 언급 횟수 그대로)
-
-###분석 절차
-1. 먼저 전체 리뷰 개수를 정확히 세기
-2. 각 리뷰를 개별적으로 긍정/부정 분류
-3. 분류 결과의 합이 전체와 일치하는지 검증
-4. 키워드 추출 및 빈도 계산
-5. 최종 검증: totalReviewCount = positiveReviewCount + negativeReviewCount
-
-###출력 형태 
-{ 
-"product": "${productServiceName}", 
-"analysisDate": "2024-12-19", 
-"totalReviewCount": [정확한 전체 리뷰 수], 
-"positiveReviewCount": [긍정 리뷰 수], 
-"negativeReviewCount": [부정 리뷰 수], 
-"positiveKeywords": [ 
-{ 
-"keyword": "키워드명", 
-"frequency": [언급 횟수], 
-"sampleReviews": ["샘플1", "샘플2", "샘플3"] 
-} 
-], 
-"negativeKeywords": [ 
-{ 
-"keyword": "키워드명", 
-"frequency": [언급 횟수], 
-"sampleReviews": ["샘플1", "샘플2", "샘플3"] 
-} 
-], 
-"insights": { 
-"improvementIdeas": ["개선아이디어1", "개선아이디어2", "개선아이디어3"], 
-"marketingStrategy": "400자 이상의 마케팅 전략", 
-"promoCopies": ["홍보카피1", "홍보카피2", "홍보카피3"] 
-} 
-} 
-
-**중요: 반드시 JSON 형식으로만 응답하고, 다른 설명은 포함하지 마세요.**
-
-###분석할 고객 리뷰
-${customerReview}
-
-###제품 정보
-제품/서비스 군: ${productServiceGroup}
-제품/서비스 이름: ${productServiceName}`;
+    // 저장된 활성 프롬프트 가져오기
+    const activePrompt = getActivePrompt();
+    console.log('📝 사용 중인 프롬프트:', activePrompt.name);
+    
+    // 프롬프트 템플릿에 변수 치환
+    const prompt = activePrompt.content
+      .replace(/{customerReview}/g, customerReview)
+      .replace(/{productServiceGroup}/g, productServiceGroup)
+      .replace(/{productServiceName}/g, productServiceName);
 
     console.log('📤 OpenAI API 호출 시작');
     console.log('사용 모델:', 'gpt-4.1');

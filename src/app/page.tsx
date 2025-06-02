@@ -62,13 +62,22 @@ export default function Home() {
       {/* 헤더 */}
       <div className="bg-white shadow-sm border-b flex-shrink-0">
         <div className="container mx-auto px-4 py-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              AI 고객 리뷰 분석 시스템
-            </h1>
-            <p className="text-gray-600">
-              OpenAI를 활용하여 고객 리뷰를 자동으로 분석하고, 긍정/부정 감성 분석과 마케팅 인사이트를 제공합니다.
-            </p>
+          <div className="flex justify-between items-center">
+            <div className="text-center flex-1">
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                AI 고객 리뷰 분석 시스템
+              </h1>
+              <p className="text-gray-600">
+                OpenAI를 활용하여 고객 리뷰를 자동으로 분석하고, 긍정/부정 감성 분석과 마케팅 인사이트를 제공합니다.
+              </p>
+            </div>
+            <a
+              href="/admin"
+              className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm"
+              title="관리자 페이지"
+            >
+              ⚙️ 관리자
+            </a>
           </div>
         </div>
       </div>
