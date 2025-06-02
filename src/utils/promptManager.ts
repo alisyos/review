@@ -60,7 +60,6 @@ export const DEFAULT_PROMPT: PromptTemplate = {
 ###출력 형태 
 { 
 "product": "{productServiceName}", 
-"analysisDate": "2024-12-19", 
 "totalReviewCount": [정확한 전체 리뷰 수], 
 "positiveReviewCount": [긍정 리뷰 수], 
 "negativeReviewCount": [부정 리뷰 수], 

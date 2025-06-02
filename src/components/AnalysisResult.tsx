@@ -20,28 +20,26 @@ export default function AnalysisResultComponent({ result, onDownload }: Analysis
   return (
     <div className="space-y-6">
       {/* 헤더 */}
-      <div className="border-b pb-4">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800">{result.product}</h3>
-            <p className="text-gray-600 mt-1">분석 날짜: {result.analysisDate}</p>
-          </div>
-          
-          {/* 다운로드 버튼 */}
-          <div className="flex gap-3">
-            <button
-              onClick={() => onDownload('html')}
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors text-sm"
-            >
-              HTML로 저장
-            </button>
-            <button
-              onClick={() => onDownload('docx')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm"
-            >
-              Word로 저장
-            </button>
-          </div>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h3 className="text-xl font-bold text-gray-800">{result.product}</h3>
+          <p className="text-sm text-gray-600">
+            총 {result.totalReviewCount}개 리뷰 분석 완료
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => onDownload('html')}
+            className="bg-green-600 text-white px-3 py-1.5 rounded-md hover:bg-green-700 transition-colors text-sm"
+          >
+            HTML 저장
+          </button>
+          <button
+            onClick={() => onDownload('docx')}
+            className="bg-blue-600 text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm"
+          >
+            Word 저장
+          </button>
         </div>
       </div>
 

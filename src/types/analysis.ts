@@ -1,12 +1,7 @@
-export interface AnalysisResult {
-  product: string;
-  analysisDate: string;
-  totalReviewCount: number;
-  positiveReviewCount: number;
-  negativeReviewCount: number;
-  positiveKeywords: Keyword[];
-  negativeKeywords: Keyword[];
-  insights: Insights;
+export interface AnalysisRequest {
+  customerReview: string;
+  productServiceGroup: string;
+  productServiceName: string;
 }
 
 export interface Keyword {
@@ -21,8 +16,12 @@ export interface Insights {
   promoCopies: string[];
 }
 
-export interface AnalysisRequest {
-  customerReview: string;
-  productServiceGroup: string;
-  productServiceName: string;
+export interface AnalysisResult {
+  product: string;
+  totalReviewCount: number;
+  positiveReviewCount: number;
+  negativeReviewCount: number;
+  positiveKeywords: Keyword[];
+  negativeKeywords: Keyword[];
+  insights: Insights;
 } 
