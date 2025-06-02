@@ -65,10 +65,10 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <div className="text-center flex-1">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                AI 고객 리뷰 분석 시스템
+                리뷰 분석 AI
               </h1>
               <p className="text-gray-600">
-                OpenAI를 활용하여 고객 리뷰를 자동으로 분석하고, 긍정/부정 감성 분석과 마케팅 인사이트를 제공합니다.
+                LLM모델을 활용하여 고객 리뷰를 자동으로 분석하고, 마케팅 인사이트를 제공합니다.
               </p>
             </div>
             <a
@@ -154,7 +154,7 @@ export default function Home() {
       <footer className="bg-white border-t flex-shrink-0">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-gray-500 text-sm">
-            &copy; 2024 AI 고객 리뷰 분석 시스템. OpenAI GPT-4를 활용한 감성 분석 서비스입니다.
+            &copy; 2024 리뷰 분석 AI. LLM을 활용한 감성 분석 서비스입니다.
           </p>
         </div>
       </footer>
