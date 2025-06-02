@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { PromptTemplate } from '@/types/prompt';
 import PromptEditor from '@/components/PromptEditor';
 
@@ -89,12 +90,12 @@ export default function AdminPage() {
                 AI 분석 시스템의 프롬프트를 관리하고 최적화하세요.
               </p>
             </div>
-            <a
+            <Link
               href="/"
               className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
             >
               메인으로 돌아가기
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -268,11 +269,11 @@ export default function AdminPage() {
                         Vercel 등 배포 환경에서 프롬프트를 변경하려면 다음과 같이 환경 변수를 설정하세요:
                       </p>
                       <div className="bg-gray-800 text-green-400 p-3 rounded text-sm font-mono">
-                        <p>CUSTOM_PROMPT='{"{"}</p>
-                        <p>&nbsp;&nbsp;"name": "커스텀 프롬프트",</p>
-                        <p>&nbsp;&nbsp;"description": "설명",</p>
-                        <p>&nbsp;&nbsp;"content": "프롬프트 내용..."</p>
-                        <p>{"}"}'</p>
+                        <p>CUSTOM_PROMPT={`'{"'`}</p>
+                        <p>&nbsp;&nbsp;{`"name": "커스텀 프롬프트",`}</p>
+                        <p>&nbsp;&nbsp;{`"description": "설명",`}</p>
+                        <p>&nbsp;&nbsp;{`"content": "프롬프트 내용..."`}</p>
+                        <p>{`'}"'`}</p>
                       </div>
                       <p className="text-xs text-gray-600 mt-2">
                         * JSON 형식으로 설정하거나, 프롬프트 내용만 문자열로 설정할 수 있습니다.

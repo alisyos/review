@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { AnalysisRequest } from '@/types/analysis';
-// @ts-ignore
 import mammoth from 'mammoth';
 
 interface ReviewFormProps {

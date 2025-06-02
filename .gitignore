@@ -39,3 +39,5 @@ next-env.d.ts
 /data/prompts/
 # 단, 기본 프롬프트는 포함
 !/data/prompts/default.json
+
+.vercel

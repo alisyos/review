@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { PromptTemplate } from '@/types/prompt';
 
 interface PromptEditorProps {
