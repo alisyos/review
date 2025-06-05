@@ -182,9 +182,13 @@ export default function AnalysisResultComponent({ result, onDownload }: Analysis
         {/* 마케팅 전략 */}
         <div className="mt-6">
           <h5 className="font-semibold text-gray-700 mb-3">마케팅 전략</h5>
-          <p className="text-gray-700 leading-relaxed bg-blue-50 p-4 rounded-lg">
-            {result.insights.marketingStrategy}
-          </p>
+          <div className="bg-blue-50 p-4 rounded-lg">
+            {result.insights.marketingStrategy.split(/\n\n|\n/).filter(p => p.trim()).map((paragraph, index) => (
+              <p key={index} className="text-gray-700 leading-relaxed mb-3 last:mb-0">
+                {paragraph.trim()}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>

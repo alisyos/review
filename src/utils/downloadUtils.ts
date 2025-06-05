@@ -105,7 +105,11 @@ export function downloadAsHTML(result: AnalysisResult) {
             </div>
             <div class="insight-item">
                 <div class="insight-title">마케팅 전략</div>
-                <div class="insight-content">${result.insights.marketingStrategy}</div>
+                <div class="insight-content">
+                    ${result.insights.marketingStrategy.split(/\n\n|\n/).filter(p => p.trim()).map(paragraph => 
+                        `<p>${paragraph.trim()}</p>`
+                    ).join('')}
+                </div>
             </div>
             <div class="insight-item">
                 <div class="insight-title">홍보 카피</div>
@@ -300,11 +304,14 @@ export async function downloadAsDocx(result: AnalysisResult) {
           spacing: { before: 200, after: 100 },
         }),
         
-        new Paragraph({
-          children: [
-            new TextRun({ text: result.insights.marketingStrategy }),
-          ],
-        }),
+        ...result.insights.marketingStrategy.split(/\n\n|\n/).filter(paragraph => paragraph.trim()).map(paragraph =>
+          new Paragraph({
+            children: [
+              new TextRun({ text: paragraph.trim() }),
+            ],
+            spacing: { after: 100 },
+          })
+        ),
         
         new Paragraph({
           children: [
